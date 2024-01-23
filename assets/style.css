@@ -1,0 +1,114 @@
+@font-face {
+  font-family: inter;
+  font-style: normal;
+  font-weight: 100 900;
+  src: url(inter-r.woff2);
+}
+@font-face {
+  font-family: inter;
+  font-style: italic;
+  font-weight: 100 900;
+  src: url(inter-i.woff2);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  font-size: min(100vw / 32, 100vh / 18);
+  font-family: inter, system-ui, sans-serif;
+}
+.slide {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: [full-width-start] calc(50vw - 16rem) [content-start] 16rem [middle] 16rem [content-end] calc(50vw - 16rem) [full-width-end];
+  /*grid-template-rows: [full-height-start] calc(50vh - 9rem) [content-start] 9rem [middle] 9rem [content-end] calc(50vh - 9rem) [full-height-end];*/
+  grid-template-rows: [full-height-start content-start] 50vh [middle] 50vh [content-end full-height-end];
+  background-size: cover;
+  background-position: center;
+}
+.slide.right {
+  left: 100vw;
+}
+.slide.left {
+  left: -100vw;
+}
+.slide.transitions {
+  transition: left ease-in-out 300ms;
+}
+.content {
+  grid-column: content;
+  grid-row: content;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+}
+.content.left {
+  grid-column: content-start / middle;
+}
+.content.right {
+  grid-column: middle / content-end;
+}
+.content.center {
+  justify-content: center;
+  align-items: center;
+}
+img.left {
+  grid-column: full-width-start / middle;
+  grid-row: full-height;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+img.right {
+  grid-column: middle / full-width-end;
+  grid-row: full-height;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+h1 {
+  font-size: 1.5rem;
+}
+h2 {
+  font-size: 1.25rem;
+}
+h3 {
+  font-size: 1rem;
+}
+h1, h2, h3, p, li, blockquote {
+  margin-bottom: 0.5rem;
+}
+footer {
+  font-size: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  width: 100%;
+}
+.dark {
+  color: #eee;
+}
+ul, ol {
+  padding-left: 1.5em;
+}
+.flow {
+  width: 100%;
+  flex-grow: 1;
+}
+a {
+  color: #36a;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.hide-cursor {
+  cursor: none;
+}
