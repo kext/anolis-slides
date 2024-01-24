@@ -109,6 +109,11 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.float {
+  float: right;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
 .hide-cursor {
   cursor: none;
 }
