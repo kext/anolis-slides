@@ -17,12 +17,49 @@
   </div>
   <div class="slide">
     <div class="content">
+      <h2>The Problem</h2>
+      <div class="flow">
+        <ul>
+          <li>Anolis lizards have a comparable brain physiology to mammals</li>
+          <li>This makes them an interesting study target</li>
+          <li>Measure brain signals in Anolis lizards</li>
+          <li>Have a wearable system that lets the animal move freely</li>
+          <li>The animal should be disturbed as little as possible</li>
+          <li>Display and collect data in real-time over a wireless connection</li>
+        </ul>
+      </div>
+      <footer>
+        <div class="pagenumber"></div>
+        <div>Lukas Joeressen</div>
+      </footer>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="content">
       <h2>The Goal</h2>
       <div class="flow">
         <ul>
           <li>Develop a system for Bluetooth communication</li>
           <li>Maximise achievable data bandwidth</li>
-          <li>Real-time data display</li>
+          <li>Real-time data display and recording</li>
+        </ul>
+      </div>
+      <footer>
+        <div class="pagenumber"></div>
+        <div>Lukas Joeressen</div>
+      </footer>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="content">
+      <h2>The Stretch Goals</h2>
+      <div class="flow">
+        <ul>
+          <li>Build the complete system</li>
+          <li>Get as small and light as possible</li>
+          <li>Test the system in a lab setting</li>
+          <li>Test with real signals</li>
+          <li>Test with the actual animals</li>
         </ul>
       </div>
       <footer>
@@ -53,6 +90,55 @@
   </div>
   <div class="slide">
     <div class="content">
+      <h2>The Hardware</h2>
+      <div class="flow">
+        <div class="float">
+          <img src="img/pcb.jpg" alt="PCB Top Side" style="width:8em;"/><br/>
+          <img src="img/pcb-battery.jpg" alt="PCB Bottom Side" style="width:8em;"/>
+        </div>
+        <ul>
+          <li>Designed with KiCad</li>
+          <li>Flexible PCB</li>
+          <li>Rechargeable 40mAh LiPo battery</li>
+          <li>Compact size (14x18mm)</li>
+          <li>As light as possible (1.71g with battery)</li>
+          <li>Analogue frontend (RHD2216)</li>
+          <li>Processor and Bluetooth antenna (Setebos-I)</li>
+          <li>Power supply and battery charging</li>
+        </ul>
+      </div>
+      <footer>
+        <div class="pagenumber"></div>
+        <div>Lukas Joeressen</div>
+      </footer>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="content">
+      <h2>The Intan RHD2216</h2>
+      <div class="flow">
+        <div class="float">
+          <img src="img/rhd.jpg" alt="RHD2000" style="width: 10em;"/>
+          <div class="caption">Image: Intan Technologies</div>
+        </div>
+        <ul>
+          <li>Integrated analogue frontend for electrophysiological signals</li>
+          <li>16 differential input channels</li>
+          <li>Integrated ADC</li>
+          <li>SPI interface</li>
+          <li>No internal clock</li>
+          <li>Configurable filters</li>
+          <li>Up to 30kHz sample rate with 16 bit</li>
+        </ul>
+      </div>
+      <footer>
+        <div class="pagenumber"></div>
+        <div>Lukas Joeressen</div>
+      </footer>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="content">
       <h2>The nRF52840 SoC</h2>
       <div class="flow">
         <div class="float">
@@ -66,7 +152,7 @@
           <li>256kB RAM</li>
           <li>1MB Flash</li>
           <li>Bluetooth Radio</li>
-          <li>Many Hardware Peripherals</li>
+          <li>Many Hardware Peripherals<br/>(SPI, Timer, DMA, PPI, USB, ...)</li>
         </ul>
       </div>
       <footer>
@@ -83,12 +169,74 @@
         <ul>
           <li>Free &amp; Open Source &ndash; We contributed!</li>
           <li>Written in the Rust programming language</li>
-          <li>Enables Rust's async/await feature</li>
+          <li>Enables Rust’s async/await feature</li>
           <li>Portable hardware abstraction for a wide variety of chips</li>
           <li>Supports nRF52840 with Bluetooth softdevice</li>
           <li>Safe and convenient APIs</li>
         </ul>
         <p>Learn more: <a href="https://embassy.dev/">https://embassy.dev/</a></p>
+      </div>
+      <footer>
+        <div class="pagenumber"></div>
+        <div>Lukas Joeressen</div>
+      </footer>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="content">
+      <h2>The RHD2216 Driver</h2>
+      <div class="flow">
+        <ul>
+          <li>Generates a steady command stream</li>
+          <li>Timer connected with SPI, counter and DMA via PPI</li>
+          <li>Double buffer with overflow space</li>
+          <li>Only buffer swap every 20ms needs CPU interaction</li>
+          <li>Since buffer swap happens during DMA operation the swap routine is written with inline assembly and the LDREX/STREX instructions</li>
+          <li>This prevents lost samples or memory corruption</li>
+        </ul>
+      </div>
+      <footer>
+        <div class="pagenumber"></div>
+        <div>Lukas Joeressen</div>
+      </footer>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="content">
+      <h2>The Bluetooth connection</h2>
+      <div class="flow">
+        <div class="float">
+          <img src="img/bluetooth.svg" alt="Bluetooth" style="width: 8em;"/>
+        </div>
+        <ul>
+          <li>BLE 5 with 2M PHY for higher data rate</li>
+          <li>L2CAP connection oriented channels</li>
+          <li>Advertisement with specific 128 bit UUID</li>
+          <li>Bluetooth dongle searches for this UUID and connects</li>
+          <li>A complete data frame is sent every 20ms</li>
+          <li>Dongle forwards the data to the USB connection</li>
+        </ul>
+      </div>
+      <footer>
+        <div class="pagenumber"></div>
+        <div>Lukas Joeressen</div>
+      </footer>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="content">
+      <h2>The Interface</h2>
+      <div class="flow">
+        <div class="float">
+          <img src="img/recording.jpg" alt="Interface" style="width:15em;"/>
+        </div>
+        <ul>
+          <li>Built with Vue.js</li>
+          <li>Runs in a normal web browser</li>
+          <li>Uses the WebUSB API</li>
+          <li>Displays data in real-time</li>
+          <li>Records data to a file</li>
+        </ul>
       </div>
       <footer>
         <div class="pagenumber"></div>
