@@ -1,5 +1,5 @@
 const show = (() => {
-  let slide = 0
+  let slide = sessionStorage.getItem('slide') | 0
   const slides = document.querySelectorAll('.slide')
   for (let i = 0; i < slides.length; ++i) {
     if (i !== slide) slides[i].classList.add(i < slide ? 'left' : 'right')
@@ -22,9 +22,12 @@ const show = (() => {
     let n = f(slide)
     if (n < 0) n = 0
     if (n >= slides.length) n = slides.length - 1
-    slide = n
-    for (let i = 0; i < slides.length; ++i) {
-      set(slides[i], i - slide)
+    if (n !== slide) {
+      slide = n
+      sessionStorage.setItem('slide', slide)
+      for (let i = 0; i < slides.length; ++i) {
+        set(slides[i], i - slide)
+      }
     }
   }
 })()
